@@ -2,6 +2,9 @@
 
     var story = new inkjs.Story(storyContent);
 
+    const wpm = 200;
+    const wpms = wpm / 60 / 1000;
+
     var storyContainer = document.querySelectorAll('#story')[0];
 
     function isAnimationEnabled() {
@@ -10,6 +13,11 @@
 
     function showAfter(delay, el) {
         setTimeout(function () { el.classList.add("show") }, isAnimationEnabled() ? delay : 0);
+    }
+
+    function computeWordCount(string) {
+        const words = string.trim().split(/\s+/);
+        return words.length;
     }
 
     function continueStory() {
@@ -28,10 +36,13 @@
             paragraphElement.innerHTML = paragraphText;
             storyContainer.appendChild(paragraphElement);
 
+            wc = computeWordCount(paragraphElement.innerText);
+
             // Fade in paragraph after a short delay
             showAfter(delay, paragraphElement);
 
-            delay += 200.0;
+            delay += wc / wpms;
+            console.log(wc, wpms, wc / wpms, delay);
         }
 
         // Create HTML choices from ink choices
@@ -43,9 +54,12 @@
             choiceParagraphElement.innerHTML = `<a href='#'>${choice.text}</a>`
             storyContainer.appendChild(choiceParagraphElement);
 
+            wc = computeWordCount(choiceParagraphElement.innerText);
+
             // Fade choice in after a short delay
             showAfter(delay, choiceParagraphElement);
-            delay += 200.0;
+            delay += wc / wpms;
+            console.log(wc, wpms, delay);
 
             // Click on choice
             var choiceAnchorEl = choiceParagraphElement.querySelectorAll("a")[0];
