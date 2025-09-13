@@ -27,6 +27,8 @@ jobs:
 
       - uses: pnpm/action-setup@v2
 
+      - run: pnpm i
+
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: pnpm run build
