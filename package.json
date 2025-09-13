@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo ok",
-    "start": "node browser_with_server/index.js"
+    "build": "echo ok"
   },
   "keywords": [],
   "author": "",
