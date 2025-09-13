@@ -104,10 +104,10 @@
                 // Don't follow <a> link
                 event.preventDefault();
 
-                // Remove all existing choices
-                var existingChoices = storyContainer.querySelectorAll('p.choice');
-                for (var i = 0; i < existingChoices.length; i++) {
-                    var c = existingChoices[i];
+                // Remove all existing output
+                var existingContent = storyContainer.querySelectorAll('p.show');
+                for (var i = 0; i < existingContent.length; i++) {
+                    var c = existingContent[i];
                     c.parentNode.removeChild(c);
                 }
 
