@@ -1,0 +1,23 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      inkjs:
+        specifier: ^2.3.2
+        version: 2.3.2
+
+packages:
+
+  inkjs@2.3.2:
+    resolution: {integrity: sha512-iZjrY0lLeRiC+HtDzCfV9IEAP9ExCmBZUrxKkyLy1qIbbGbR1uTXNZ8LDIg8oVkMXZ9TeKKyEFQpQ/m5nQds8w==}
+    hasBin: true
+
+snapshots:
+
+  inkjs@2.3.2: {}
