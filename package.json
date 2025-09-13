@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm exec inkjs-compiler src/*"
+    "build": "pnpm exec inkjs-compiler src/story.ink -o docs/story.json"
   },
   "keywords": [],
   "author": "",
