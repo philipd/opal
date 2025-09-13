@@ -12,6 +12,7 @@
   "license": "ISC",
   "packageManager": "pnpm@10.16.0",
   "dependencies": {
+    "express": "^5.1.0",
     "inkjs": "^2.3.2"
   }
 }
