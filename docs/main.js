@@ -2,7 +2,7 @@
 
     var story = new inkjs.Story(storyContent);
 
-    const wpm = 200;
+    const wpm = 300;
     const wpms = wpm / 60 / 1000;
 
     var storyContainer = document.querySelectorAll('#story')[0];
