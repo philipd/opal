@@ -1,11 +1,18 @@
 (function (storyContent) {
 
-    var story = new inkjs.Story(storyContent);
-
     const wpm = 300;
     const wpms = wpm / 60 / 1000;
 
     var storyContainer = document.querySelectorAll('#story')[0];
+
+    fetch('story.json')
+	.then(function(response){
+		return response.text();
+	})
+	.then(function(storyContent){
+		story = new inkjs.Story(storyContent);
+		continueStory();
+	});
 
     function isAnimationEnabled() {
         return window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
