@@ -5,14 +5,19 @@
 
     var storyContainer = document.querySelectorAll('#story')[0];
 
+    const state = localStorage.getItem("state");
+
     fetch('story.json')
-	.then(function(response){
-		return response.text();
-	})
-	.then(function(storyContent){
-		story = new inkjs.Story(storyContent);
-		continueStory();
-	});
+    .then(function(response){
+        return response.text();
+    })
+    .then(function(storyContent){
+        story = new inkjs.Story(storyContent);
+        if (state) {
+            story.state.LoadJson(state);
+        }
+        continueStory();
+    });
 
     function isAnimationEnabled() {
         return window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
@@ -28,6 +33,7 @@
     }
 
     function continueStory() {
+        localStorage.setItem("state", story.state.ToJson());
 
         var paragraphIndex = 0;
         var delay = 0.0;
