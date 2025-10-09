@@ -13,5 +13,8 @@
   "packageManager": "pnpm@10.16.0",
   "dependencies": {
     "inkjs": "^2.3.2"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
   }
 }
