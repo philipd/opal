@@ -1,102 +1,102 @@
 (function (storyContent) {
+  const wpm = 300;
+  const wpms = wpm / 60 / 1000;
 
-    const wpm = 300;
-    const wpms = wpm / 60 / 1000;
+  var storyContainer = document.querySelectorAll("#story")[0];
 
-    var storyContainer = document.querySelectorAll('#story')[0];
+  const state = localStorage.getItem("state");
 
-    const state = localStorage.getItem("state");
-
-    fetch('story.json')
-    .then(function(response){
-        return response.text();
+  fetch("story.json")
+    .then(function (response) {
+      return response.text();
     })
-    .then(function(storyContent){
-        story = new inkjs.Story(storyContent);
-        if (state) {
-            story.state.LoadJson(state);
-        }
-        continueStory();
+    .then(function (storyContent) {
+      story = new inkjs.Story(storyContent);
+      if (state) {
+        story.state.LoadJson(state);
+      }
+      continueStory();
     });
 
-    function isAnimationEnabled() {
-        return window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  function isAnimationEnabled() {
+    return window.matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  }
+
+  function showAfter(delay, el) {
+    setTimeout(
+      function () {
+        el.classList.add("show");
+      },
+      isAnimationEnabled() ? delay : 0
+    );
+  }
+
+  function computeWordCount(string) {
+    const words = string.trim().split(/\s+/);
+    return words.length;
+  }
+
+  function continueStory() {
+    localStorage.setItem("state", story.state.ToJson());
+
+    var paragraphIndex = 0;
+    var delay = 0.0;
+
+    // Generate story text - loop through available content
+    while (story.canContinue) {
+      // Get ink to generate the next paragraph
+      var paragraphText = story.Continue();
+
+      // Create paragraph element
+      var paragraphElement = document.createElement("p");
+      paragraphElement.innerHTML = paragraphText;
+      storyContainer.appendChild(paragraphElement);
+
+      wc = computeWordCount(paragraphElement.innerText);
+
+      // Fade in paragraph after a short delay
+      showAfter(delay, paragraphElement);
+
+      delay += wc / wpms;
+      console.log(wc, wpms, wc / wpms, delay);
     }
 
-    function showAfter(delay, el) {
-        setTimeout(function () { el.classList.add("show") }, isAnimationEnabled() ? delay : 0);
-    }
+    // Create HTML choices from ink choices
+    story.currentChoices.forEach(function (choice) {
+      // Create paragraph with anchor element
+      var choiceParagraphElement = document.createElement("p");
+      choiceParagraphElement.classList.add("choice");
+      choiceParagraphElement.innerHTML = `<a href='#'>${choice.text}</a>`;
+      storyContainer.appendChild(choiceParagraphElement);
 
-    function computeWordCount(string) {
-        const words = string.trim().split(/\s+/);
-        return words.length;
-    }
+      wc = computeWordCount(choiceParagraphElement.innerText);
 
-    function continueStory() {
-        localStorage.setItem("state", story.state.ToJson());
+      // Fade choice in after a short delay
+      showAfter(delay, choiceParagraphElement);
+      delay += wc / wpms;
+      console.log(wc, wpms, delay);
 
-        var paragraphIndex = 0;
-        var delay = 0.0;
+      // Click on choice
+      var choiceAnchorEl = choiceParagraphElement.querySelectorAll("a")[0];
+      choiceAnchorEl.addEventListener("click", function (event) {
+        // Don't follow <a> link
+        event.preventDefault();
 
-        // Generate story text - loop through available content
-        while (story.canContinue) {
-
-            // Get ink to generate the next paragraph
-            var paragraphText = story.Continue();
-
-            // Create paragraph element
-            var paragraphElement = document.createElement('p');
-            paragraphElement.innerHTML = paragraphText;
-            storyContainer.appendChild(paragraphElement);
-
-            wc = computeWordCount(paragraphElement.innerText);
-
-            // Fade in paragraph after a short delay
-            showAfter(delay, paragraphElement);
-
-            delay += wc / wpms;
-            console.log(wc, wpms, wc / wpms, delay);
+        // Remove all existing output
+        var existingContent = storyContainer.querySelectorAll("p.show");
+        for (var i = 0; i < existingContent.length; i++) {
+          var c = existingContent[i];
+          c.parentNode.removeChild(c);
         }
 
-        // Create HTML choices from ink choices
-        story.currentChoices.forEach(function (choice) {
+        // Tell the story where to go next
+        story.ChooseChoiceIndex(choice.index);
 
-            // Create paragraph with anchor element
-            var choiceParagraphElement = document.createElement('p');
-            choiceParagraphElement.classList.add("choice");
-            choiceParagraphElement.innerHTML = `<a href='#'>${choice.text}</a>`
-            storyContainer.appendChild(choiceParagraphElement);
+        // Aaand loop
+        continueStory();
+      });
+    });
+  }
 
-            wc = computeWordCount(choiceParagraphElement.innerText);
-
-            // Fade choice in after a short delay
-            showAfter(delay, choiceParagraphElement);
-            delay += wc / wpms;
-            console.log(wc, wpms, delay);
-
-            // Click on choice
-            var choiceAnchorEl = choiceParagraphElement.querySelectorAll("a")[0];
-            choiceAnchorEl.addEventListener("click", function (event) {
-
-                // Don't follow <a> link
-                event.preventDefault();
-
-                // Remove all existing output
-                var existingContent = storyContainer.querySelectorAll('p.show');
-                for (var i = 0; i < existingContent.length; i++) {
-                    var c = existingContent[i];
-                    c.parentNode.removeChild(c);
-                }
-
-                // Tell the story where to go next
-                story.ChooseChoiceIndex(choice.index);
-
-                // Aaand loop
-                continueStory();
-            });
-        });
-    }
-
-    continueStory();
-
+  continueStory();
 })(storyContent);
