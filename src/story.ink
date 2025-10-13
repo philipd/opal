@@ -6,7 +6,6 @@
 	-> choices
 = choices
 	+ Its elegant frame is painted gold[ ...] <>
-	  ~ foo = 8
 		-> frame
 	+ It depicts a country scene[ ...] <>
 		-> country_scene
