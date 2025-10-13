@@ -61,6 +61,11 @@
       console.log(wc, wpms, wc / wpms, delay);
     }
 
+    if (!!story && !!story.state && story.currentChoices.length == 0) {
+      console.log("... finished?");
+      localStorage.removeItem("state", story.state.ToJson());
+    }
+
     // Create HTML choices from ink choices
     story.currentChoices.forEach(function (choice) {
       // Create paragraph with anchor element
