@@ -1,6 +1,3 @@
-VAR end = false
-VAR foo = 3
-
 -> the_painting
 
 === the_painting ===
@@ -24,9 +21,4 @@ VAR foo = 3
 
 === the_end ===
 FIN
-~ end = true
-~ foo = 6
--> other_end
-
-=== other_end ===
 -> END
