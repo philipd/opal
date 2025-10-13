@@ -19,5 +19,6 @@
 		-> choices
 
 === the_end ===
-FIN
+The End
+Reload your browser to continue.
 -> END
